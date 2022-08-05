@@ -11,7 +11,7 @@ const mintLpToken = require('../hooks/mintLpToken.js')
 
 const action = {
     name: 'compound-cft',
-    label: 'Claim and compound CFT + Balanced rewards',
+    label: 'Claim and compound CFT with CFT/sICX pair on balanced',
     execute: async () => {
         try {
             const address = process.env.ICON_PUBLIC_KEY

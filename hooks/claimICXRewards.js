@@ -18,7 +18,7 @@ module.exports = async function claimICXRewards() {
     if (claimICXRewardsQuery.status === 1) {
         console.log('\nClaiming ICX success !')
         const balances = await getBalances()
-        console.log(`New ICX balance: ${parseInt(balances.icx.formatted, 10) * 10 ** -18}`)
+        console.log(`New ICX balance: ${balances.icx.formatted}`)
         return true
     } else {
         console.log('\nClaiming ICX failed !')

@@ -10,7 +10,7 @@ module.exports = function getNetworkConfig() {
         provider: null
     }
 
-    switch (networl) {
+    switch (network) {
         case 'testnet':
             networkConfig.nid = '83'
             networkConfig.url = 'https://sejong.net.solidwallet.io/'

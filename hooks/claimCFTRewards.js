@@ -18,7 +18,7 @@ module.exports = async function claimCFTRewards() {
     if (claimCFTRewardsQuery.status === 1) {
         console.log('\nClaiming CFT success !')
         const balances = await getBalances()
-        console.log(`New CFT balance: ${parseInt(balances.cft.formatted, 10) * 10 ** -18}`)
+        console.log(`New CFT balance: ${balances.cft.formatted}`)
         return true
     } else {
         console.log('\nClaiming CFT failed !')

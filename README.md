@@ -1,6 +1,6 @@
 # CFT Compounder
 
-This script automate the action of claiming weekly rewards, provide liquidity within the sICX/CFT pair and staking the LP back on craft to compound $CFT rewards.
+This script automate the action of claiming weekly rewards, provide liquidity within the sICX/CFT pair and staking the LP back on Craft to compound $CFT rewards.
 
 ## How to use
 

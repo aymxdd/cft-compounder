@@ -12,7 +12,7 @@ const mintLpToken = require('../hooks/mintLpToken.js')
 const action = {
     name: 'compound-cft',
     label: 'Claim and compound CFT + Balanced rewards',
-    execute: async () => {        
+    execute: async () => {
         try {
             const address = process.env.ICON_PUBLIC_KEY
             
@@ -63,12 +63,12 @@ const action = {
                 await balances.update()
 
                 const poolStats = await getPoolStats()
-                const sICXCost = (parseInt(poolStats.returnData[0].returnData.price, 16) * 10 ** -18) * balances.cft.formatted
+                const sICXCost = poolStats.returnData[0].returnData.price * balances.cft.raw
 
-                if (sICXCost > balances.sicx.formatted) {
+                if (sICXCost > balances.sicx.raw) {
                     console.log('Not enough sICX. Stopping now.')
                     return false
-                } else if (balances.cft.formatted <= 0) {
+                } else if (balances.cft.raw <= 0) {
                     console.log('Not enough CFT. Stopping now.')
                     return false
                 } else {

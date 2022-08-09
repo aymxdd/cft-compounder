@@ -44,8 +44,7 @@ const action = {
             console.log(`Staking rewards: ${rewards.stakingRewards.formatted} ICX`)
             console.log('\n=============ACTIONS=============\n')
 
-            // if (rewards.lpRewards.raw <= 0) {
-            if (false) {
+            if (rewards.lpRewards.raw <= 0) {
                 console.log('No LP rewards. Stopping now.')
                 return false
             } else {

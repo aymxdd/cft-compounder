@@ -1,5 +1,6 @@
 const addresses = require('../config/addresses.js')
 const SCORECallTransaction = require('../helpers/SCORECallTransaction.js')
+const getBalances = require('./getBalances.js')
 
 module.exports = async function transferCFTToBalanced() {
     console.log('Transfering CFT to balanced...\n')

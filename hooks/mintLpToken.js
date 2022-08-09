@@ -1,11 +1,10 @@
 const addresses = require('../config/addresses.js')
 const SCORECallTransaction = require('../helpers/SCORECallTransaction.js')
 
-module.exports = async function mintLpToken(poolStats) {
+module.exports = async function mintLpToken(balances, ammount = 0) {
     console.log('Minting LP token... \n')
 
     const address = process.env.ICON_PUBLIC_KEY
-    const balances = await getBalances()
 
     console.log('Minting LP token... \n')
     const lpTokenMinting = await SCORECallTransaction({
@@ -16,7 +15,7 @@ module.exports = async function mintLpToken(poolStats) {
             _baseToken: addresses.CFT,
             _quoteToken: addresses.sICX,
             _baseValue: balances.cft.raw,
-            _quoteValue: `0x${((poolStats.returnData[0].returnData.price * balances.cft.raw) * 10 ** -18).toString(16)}`
+            _quoteValue: `0x${ammount.toString(16)}`
         }
     })
 

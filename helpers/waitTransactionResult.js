@@ -17,7 +17,6 @@ module.exports = function waitTransactionResult(txHash) {
             } catch (err) {
                 if (lastStatus !== err) {
                     lastStatus = err
-                    console.log(err.substring(12, err.length))
                 }
             }
         }, 500)

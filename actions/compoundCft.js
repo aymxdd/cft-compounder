@@ -44,7 +44,8 @@ const action = {
             console.log(`Staking rewards: ${rewards.stakingRewards.formatted} ICX`)
             console.log('\n=============ACTIONS=============\n')
 
-            if (rewards.lpRewards.raw <= 0) {
+            // if (rewards.lpRewards.raw <= 0) {
+            if (false) {
                 console.log('No LP rewards. Stopping now.')
                 return false
             } else {
@@ -63,24 +64,26 @@ const action = {
                 await balances.update()
 
                 const poolStats = await getPoolStats()
-                const sICXCost = poolStats.returnData[0].returnData.price * balances.cft.raw
+                const sICXCost = (parseInt(poolStats.returnData[0].returnData.price, 16) * 10 ** -18) * balances.cft.formatted
 
-                if (sICXCost > balances.sicx.raw) {
+                if (sICXCost > balances.sicx.formatted) {
                     console.log('Not enough sICX. Stopping now.')
                     return false
-                } else if (balances.cft.raw <= 0) {
+                } else if (balances.cft.formatted <= 0) {
                     console.log('Not enough CFT. Stopping now.')
                     return false
                 } else {
                     console.log('Enough sICX and CFT. Proceeding.\n')
+
+                    const ammount = ((poolStats.returnData[0].returnData.price * balances.cft.raw) * 10 ** -18).toString(16)
                     
                     const transferCFTToBalancedQuery = await transferCFTToBalanced()
                     if (!transferCFTToBalancedQuery) return false
     
-                    const transferSICXToBalancedQuery = await transferSICXToBalanced(poolStats)
+                    const transferSICXToBalancedQuery = await transferSICXToBalanced(ammount)
                     if (!transferSICXToBalancedQuery) return false
 
-                    const mintLpTokenQuery = await mintLpToken(poolStats)
+                    const mintLpTokenQuery = await mintLpToken(balances, ammount)
                     if (!mintLpTokenQuery) return false
 
                     const depositLpToCraftQuery = await depositLpToCraft()

@@ -8,8 +8,7 @@
   "repository": "https://github.com/aymxdd/cft-compounder",
   "private": true,
   "scripts": {
-    "start": "node index.js",
-    "compound-cft": "node index.js compound-cft"
+    "start": "node index.js compound-cft"
   },
   "dependencies": {
     "dotenv": "^16.0.1",

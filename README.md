@@ -7,4 +7,4 @@ This script automate the action of claiming weekly rewards, provide liquidity wi
 - Clone this repo
 - copy `.env.example` to `.env` and fill in your private and public keys
 - run `yarn` (or `npm install`)
-- run `yarn compound-cft` (or `npm run compound-cft`)
+- run `yarn start` (or `npm run start`)

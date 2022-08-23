@@ -3,10 +3,9 @@
   "version": "1.0.0",
   "description": "Automate $CFT claiming and Balanced LP staking",
   "main": "index.js",
-  "author": "Staky-io",
+  "author": "aymxdd",
   "license": "MIT",
   "repository": "https://github.com/aymxdd/cft-compounder",
-  "private": true,
   "scripts": {
     "start": "node index.js compound-cft"
   },

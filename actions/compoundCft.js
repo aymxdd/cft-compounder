@@ -1,4 +1,6 @@
 const { IconValidator } = require('icon-sdk-js').default
+const { BigNumber } = require('ethers')
+const { formatUnits } = require('ethers/lib/utils.js')
 const getBalances = require('../hooks/getBalances.js')
 const getRewards = require('../hooks/getRewards.js')
 const getPoolStats = require('../hooks/getPoolStats.js')
@@ -23,16 +25,16 @@ const action = {
             const balances = await getBalances()
 
             console.log('=============BALANCES=============\n')
-            console.log(`ICX balance: ${balances.icx.formatted}`)
-            console.log(`sICX balance: ${balances.sicx.formatted}`)
-            console.log(`CFT balance: ${balances.cft.formatted}`)
+            console.log(`ICX balance: ${formatUnits(balances.icx)}`)
+            console.log(`sICX balance: ${formatUnits(balances.sicx)}`)
+            console.log(`CFT balance: ${formatUnits(balances.cft)}`)
 
-            if (balances.icx.raw <= 0) {
+            if (balances.icx.lte(BigNumber.from(0))) {
                 console.log('Not enough ICX. Stopping now.')
                 return false
             }
 
-            if (balances.sicx.raw <= 0) {
+            if (balances.sicx.lte(BigNumber.from(0))) {
                 console.log('Not enough sICX. Stopping now.')
                 return false
             }
@@ -40,22 +42,22 @@ const action = {
             const rewards = await getRewards()
             
             console.log('\n=============REWARDS=============\n')
-            console.log(`LP rewards: ${rewards.lpRewards.formatted} CFT`)
-            console.log(`Staking rewards: ${rewards.stakingRewards.formatted} ICX`)
+            console.log(`LP rewards: ${formatUnits(rewards.lpRewards)} CFT`)
+            console.log(`Staking rewards: ${formatUnits(rewards.stakingRewards)} ICX`)
             console.log('\n=============ACTIONS=============\n')
 
-            if (rewards.lpRewards.raw <= 0) {
+            if (rewards.lpRewards.lte(BigNumber.from(0))) {
                 console.log('No LP rewards. Stopping now.')
                 return false
             } else {
                 console.log('LP rewards found. Continuing.')
 
-                if (rewards.stakingRewards.raw > 0) {
+                if (rewards.stakingRewards.gt(BigNumber.from(0))) {
                     const claimICXRewardsQuery = await claimICXRewards()
                     if (!claimICXRewardsQuery) return false
                 }
 
-                if (rewards.lpRewards.raw > 0) {
+                if (rewards.lpRewards.gt(BigNumber.from(0))) {
                     const claimCFTRewardsQuery = await claimCFTRewards()
                     if (!claimCFTRewardsQuery) return false
                 }
@@ -63,26 +65,23 @@ const action = {
                 await balances.update()
 
                 const poolStats = await getPoolStats()
-                const sICXCost = (parseInt(poolStats.returnData[0].returnData.price, 16) * 10 ** -18) * balances.cft.formatted
+                const sICXCost = BigNumber.from(parseInt(formatUnits(BigNumber.from(poolStats.returnData[0].returnData.price).mul(balances.cft))).toString())
 
-                if (sICXCost > balances.sicx.formatted) {
+                console.log(sICXCost)
+
+                if (sICXCost.gt(balances.sicx)) {
                     console.log('Not enough sICX. Stopping now.')
-                    return false
-                } else if (balances.cft.formatted <= 0) {
-                    console.log('Not enough CFT. Stopping now.')
                     return false
                 } else {
                     console.log('Enough sICX and CFT. Proceeding.\n')
 
-                    const ammount = ((poolStats.returnData[0].returnData.price * balances.cft.raw) * 10 ** -18).toString(16)
-                    
                     const transferCFTToBalancedQuery = await transferCFTToBalanced()
                     if (!transferCFTToBalancedQuery) return false
     
-                    const transferSICXToBalancedQuery = await transferSICXToBalanced(ammount)
+                    const transferSICXToBalancedQuery = await transferSICXToBalanced(sICXCost)
                     if (!transferSICXToBalancedQuery) return false
 
-                    const mintLpTokenQuery = await mintLpToken(balances, ammount)
+                    const mintLpTokenQuery = await mintLpToken(balances, sICXCost)
                     if (!mintLpTokenQuery) return false
 
                     const depositLpToCraftQuery = await depositLpToCraft()

@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "dotenv": "^16.0.1",
+    "ethers": "^5.7.1",
     "icon-sdk-js": "^1.2.1"
   }
 }

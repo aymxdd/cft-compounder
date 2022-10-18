@@ -1,7 +1,8 @@
+const { BigNumber } = require('ethers')
 const addresses = require('../config/addresses.js')
 const SCORECallTransaction = require('../helpers/SCORECallTransaction.js')
 
-module.exports = async function mintLpToken(balances, ammount = 0) {
+module.exports = async function mintLpToken(balances, ammount = BigNumber.from(0)) {
     console.log('Minting LP token... \n')
 
     const address = process.env.ICON_PUBLIC_KEY
@@ -14,8 +15,8 @@ module.exports = async function mintLpToken(balances, ammount = 0) {
         _params: {
             _baseToken: addresses.CFT,
             _quoteToken: addresses.sICX,
-            _baseValue: balances.cft.raw,
-            _quoteValue: `0x${ammount.toString(16)}`
+            _baseValue: balances.cft.toHexString(),
+            _quoteValue: ammount.toHexString()
         }
     })
 

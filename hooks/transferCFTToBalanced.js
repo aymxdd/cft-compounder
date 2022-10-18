@@ -14,7 +14,7 @@ module.exports = async function transferCFTToBalanced() {
         _from: address,
         _params: {
             _to: addresses.balancedPool,
-            _value: balances.cft.raw,
+            _value: balances.cft.toHexString(),
             _data: '0x7b226d6574686f64223a225f6465706f736974227d' // { method: transfer }
         }
     })

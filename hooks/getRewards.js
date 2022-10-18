@@ -1,3 +1,4 @@
+const ethers = require('ethers')
 const SCOREReadOnly = require('../helpers/SCOREReadOnly.js')
 const addresses = require('../config/addresses.js')
 
@@ -21,14 +22,8 @@ module.exports = async function getRewards() {
     })
 
     const rewards = {
-        lpRewards: {
-            raw: lpRewards,
-            formatted: parseInt(lpRewards, 10) * 10 ** -18
-        },
-        stakingRewards: {
-            raw: stakingRewards,
-            formatted: parseInt(stakingRewards, 16) * 10 ** -18
-        },
+        lpRewards: ethers.BigNumber.from(lpRewards),
+        stakingRewards: ethers.BigNumber.from(stakingRewards)
     }
 
     return rewards

@@ -1,7 +1,8 @@
+const { BigNumber } = require('ethers')
 const addresses = require('../config/addresses.js')
 const SCORECallTransaction = require('../helpers/SCORECallTransaction.js')
 
-module.exports = async function transferSICXToBalanced(ammount = 0) {
+module.exports = async function transferSICXToBalanced(ammount = BigNumber.from(0)) {
     console.log('Transfering sICX to balanced...\n')
 
     const address = process.env.ICON_PUBLIC_KEY
@@ -12,7 +13,7 @@ module.exports = async function transferSICXToBalanced(ammount = 0) {
         _from: address,
         _params: {
             _to: addresses.balancedPool,
-            _value: `0x${ammount.toString(16)}`,
+            _value: ammount.toHexString(),
             _data: '0x7b226d6574686f64223a225f6465706f736974227d' // { method: transfer }
         }
     })

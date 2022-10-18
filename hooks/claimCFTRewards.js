@@ -1,6 +1,7 @@
 const SCORECallTransaction = require('../helpers/SCORECallTransaction.js')
 const addresses = require('../config/addresses.js')
 const getBalances = require('./getBalances.js')
+const { formatUnits } = require('ethers/lib/utils.js')
 
 module.exports = async function claimCFTRewards() {
     console.log('\nClaiming CFT...')
@@ -18,7 +19,7 @@ module.exports = async function claimCFTRewards() {
     if (claimCFTRewardsQuery.status === 1) {
         console.log('\nClaiming CFT success !')
         const balances = await getBalances()
-        console.log(`New CFT balance: ${balances.cft.formatted}`)
+        console.log(`New CFT balance: ${formatUnits(balances.cft)}`)
         return true
     } else {
         console.log('\nClaiming CFT failed !')

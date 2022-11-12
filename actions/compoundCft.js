@@ -67,8 +67,6 @@ const action = {
                 const poolStats = await getPoolStats()
                 const sICXCost = BigNumber.from(parseInt(formatUnits(BigNumber.from(poolStats.returnData[0].returnData.price).mul(balances.cft))).toString())
 
-                console.log(sICXCost)
-
                 if (sICXCost.gt(balances.sicx)) {
                     console.log('Not enough sICX. Stopping now.')
                     return false
